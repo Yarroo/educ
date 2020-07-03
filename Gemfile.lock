@@ -215,6 +215,8 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     rubyzip (2.3.0)
+    russian (0.6.0)
+      i18n (>= 0.5.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -297,6 +299,7 @@ DEPENDENCIES
   puma (~> 4.1)
   pundit
   rails (~> 6.0.3, >= 6.0.3.2)
+  russian
   sass-rails (>= 6)
   selenium-webdriver
   simple_form
