@@ -1,0 +1,14 @@
+ru:
+  activerecord:
+    models:
+      district: Округ
+      region: Регион
+      city: Город
+    attributes:
+      district:
+        name: Название
+      region:
+        name: Название
+      city:
+        name: Название
+        population: Население
