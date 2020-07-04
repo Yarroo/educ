@@ -1,4 +1,4 @@
 class Region < ApplicationRecord
-  has_one :district
+  belongs_to :district
   has_many :cities
 end
