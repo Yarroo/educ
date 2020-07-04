@@ -8,7 +8,6 @@ ActiveAdmin.register City do
     id_column
     column :name
     column :population
-    column :code
     column :district
     column :region
   end
