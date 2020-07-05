@@ -1,7 +1,7 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.14.1"
 
-sset :application, 'app'
+set :application, 'app'
 set :repo_url, 'git@github.com:Yarroo/educ.git'  # Edit this to match your repository
 set :branch, :master
 set :deploy_to, '/home/deploy/app'
