@@ -15,6 +15,8 @@ require("channels")
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
-import 'bootstrap';
-import './stylesheets/application.scss';
+import 'jquery'
+import 'src/plugins'
+import 'stylesheets/site'
 
+Rails.start()
