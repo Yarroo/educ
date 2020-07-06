@@ -16,7 +16,7 @@ require("channels")
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 import 'jquery'
-import 'src/plugins'
-import 'stylesheets/site'
+import '../src/plugins'
+import '../stylesheets/site.scss'
 
 Rails.start()
