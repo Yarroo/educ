@@ -1,4 +1,4 @@
-ActiveAdmin.register City do
+ActiveAdmin.register School do
   actions :index, :show
 
   index do
