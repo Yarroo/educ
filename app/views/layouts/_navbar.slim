@@ -6,6 +6,10 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
     ul.navbar-nav.mr-auto
       li.nav-item.active
         = link_to "Главная", root_path, class:"nav-link"
+      - if current_user
+        li.nav-item
+          =link_to 'Админка', admin_root_path, class: 'nav-link'
+
     ul.navbar-nav.ml-auto
       - if current_user
         li.nav-item.dropdown
