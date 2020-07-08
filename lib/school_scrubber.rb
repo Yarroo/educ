@@ -12,7 +12,7 @@ class SchoolScrubber
   end
 
   def clean_director
-    @row['director'].gsub(/[[:space:]]/, '')
+    @row['director'].strip
   end
 
   def parse_phones
