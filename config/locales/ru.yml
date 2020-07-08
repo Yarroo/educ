@@ -4,6 +4,7 @@ ru:
       district: Округ
       region: Регион
       city: Город
+      school: Школа
     attributes:
       district:
         name: Название
@@ -12,3 +13,11 @@ ru:
       city:
         name: Название
         population: Население
+      school:
+        name: Имя
+        short_name: Короткое имя
+        director: Директор
+        address: Адрес
+        phone: Телефон
+        site: Сайт
+        city: Город

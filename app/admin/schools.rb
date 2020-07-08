@@ -8,7 +8,7 @@ ActiveAdmin.register School do
     column :name
     column :short_name
     column :director
-    column :email
+    column (:email) { |school| school.email.map { |email| mail_to email }}
     column :address
     column :phone
     column :site
