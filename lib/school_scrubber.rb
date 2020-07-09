@@ -4,7 +4,7 @@ class SchoolScrubber
   end
 
   def clean_name
-    @row['name'].strip
+    @row['name'].gsub(/[[:space:]]/, " ").gsub(/ +/, " ").strip
   end
 
   def clean_address
