@@ -69,3 +69,4 @@ gem 'russian'
 gem 'figaro'
 
 gem 'activeadmin_addons'
+gem 'active_admin_theme'
