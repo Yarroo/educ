@@ -124,7 +124,7 @@ ActiveAdmin.setup do |config|
   # This allows your users to comment on any resource registered with Active Admin.
   #
   # You can completely disable comments:
-  # config.comments = false
+  config.comments = false
   #
   # You can change the name under which comments are registered:
   # config.comments_registration_name = 'AdminComment'
@@ -223,6 +223,29 @@ ActiveAdmin.setup do |config|
   #
   # Force the use of quotes
   # config.csv_options = { force_quotes: true }
+
+
+  config.namespace :admin do |admin|
+    admin.build_menu do |menu|
+      menu.add id: 'users_menu',  priority: 2, label: 'Пользователи' do |submenu|
+        submenu.add label: 'Пользователи', priority: 1, url: proc { admin_users_path }
+        submenu.add label: 'Роли', priority: 2, url: proc { admin_user_roles_path }
+      end
+
+      menu.add label: "Федеральные округа", priority: 3, url: proc { admin_districts_path }
+      menu.add label: "Регионы", priority: 4, url: proc { admin_regions_path }
+      menu.add label: "Города", priority: 5, url: proc { admin_cities_path }
+      menu.add label: "Школы", priority: 6, url: proc { admin_schools_path }
+    end
+
+    admin.build_menu :utility_navigation do |menu|
+      menu.add label:  proc{ display_name current_active_admin_user },
+               url:    proc{  edit_admin_user_path(current_active_admin_user) }  ,
+               id:     'current_user',
+               if:     proc{ current_active_admin_user? }
+      admin.add_logout_button_to_menu menu
+    end
+  end
 
   # == Menu System
   #

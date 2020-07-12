@@ -1,4 +1,6 @@
 ActiveAdmin.register District do
+  menu false
+
   actions :index, :show
 
   config.sort_order = 'name_asc'

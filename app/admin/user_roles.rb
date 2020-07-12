@@ -1,4 +1,6 @@
 ActiveAdmin.register UserRole do
+  menu false
+
   permit_params :name, :role
 
   index do

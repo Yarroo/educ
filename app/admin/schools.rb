@@ -1,4 +1,6 @@
 ActiveAdmin.register School do
+  menu false
+
   actions :index, :show
 
   index do
