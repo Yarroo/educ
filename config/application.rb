@@ -16,6 +16,7 @@ module Educ
 
     unless Rails.env.development?
       require 'school_scrubber'
+      require ''
     end
 
     # Settings in config/environments/* take precedence over those specified here.

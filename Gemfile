@@ -70,3 +70,4 @@ gem 'figaro'
 
 gem 'activeadmin_addons'
 gem 'active_admin_theme'
+gem "active_admin_import" , github: "activeadmin-plugins/active_admin_import"

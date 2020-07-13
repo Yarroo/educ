@@ -1,5 +1,10 @@
 ActiveAdmin.register School do
   menu false
+  active_admin_import validate: true,
+                      before_batch_import: proc { |import|
+                        scrubber = CsvScrubber.new(import)
+                        scrubber.scrub
+                      }
 
   actions :index, :show
 

@@ -3,27 +3,43 @@ class SchoolScrubber
     @row = row
   end
 
-  def clean_name
-    @row['name'].gsub(/[[:space:]]/, " ").gsub(/ +/, " ").strip
+  def result
+    {
+        name: scrub_name(@row['name']),
+        address: scrub_address(@row['address']),
+        director: scrub_director(@row['director']),
+        phone: scrub_phone(@row['phone']),
+        email: scrub_email(@row['email']),
+        site: scrub_site(@row['site']),
+        short_name: scrub_short_name(@row['short_name'])
+    }
   end
 
-  def clean_address
-    @row['address'].gsub!(/[^0-9А-Яа-я\.,]/, '')
+  def scrub_short_name(text)
+    text&.gsub(/[[:space:]]/, " ")&.gsub(/ +/, " ")&.strip
   end
 
-  def clean_director
-    @row['director'].strip
+  def scrub_name(text)
+    text&.gsub(/[[:space:]]/, " ")&.gsub(/ +/, " ")&.strip
   end
 
-  def parse_phones
-    @row['phone'].split(/([\d\+\-\(\)]+)+/).select{|x| x.present?}
+  def scrub_address(text)
+    text&.gsub!(/[^0-9А-Яа-я\.,]/, '')
   end
 
-  def parse_email
-    Array.wrap(@row['email'].gsub(/[[:space:]]/, ''))
+  def scrub_director(text)
+    text&.strip
   end
 
-  def clean_site
-    @row['site'].gsub(/[[:space:]]/, '')
+  def scrub_phone(text)
+    text&.scan(School::FIND_PATTERN[:phone]).flatten.select{|x| x.length > 5}
+  end
+
+  def scrub_email(text)
+    text&.gsub('@ ', '@')&.scan(School::FIND_PATTERN[:email]).flatten
+  end
+
+  def scrub_site(text)
+    URI.extract(text)
   end
 end
