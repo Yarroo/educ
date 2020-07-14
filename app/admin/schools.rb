@@ -6,8 +6,6 @@ ActiveAdmin.register School do
                         scrubber.scrub
                       }
 
-  actions :index, :show
-
   filter :city, collection: proc {City.includes(:schools).where.not(schools: {id: nil}).pluck(:name, :id).uniq}
 
   index do
@@ -22,5 +20,17 @@ ActiveAdmin.register School do
     column :phone
     column :site
     column :city
+    actions
+  end
+
+  csv do
+    column :id
+    column (:city) { |school| school.city.name }
+    column :name
+    column :short_name
+    column :director
+    column (:email) { |school| school.email.join(", ") }
+    column (:phone) { |school| school.phone.join(", ")}
+    column :site
   end
 end
