@@ -8,6 +8,8 @@ ActiveAdmin.register School do
 
   actions :index, :show
 
+  filter :city, collection: proc {City.includes(:schools).where.not(schools: {id: nil}).pluck(:name, :id).uniq}
+
   index do
     selectable_column
     id_column
