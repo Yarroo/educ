@@ -1,7 +1,9 @@
 ActiveAdmin.register School do
   menu false
   active_admin_import validate: true,
+                      headers_rewrites: { 'city': :city_id },
                       before_batch_import: proc { |import|
+                        import.batch_slice_columns(['name', 'short_name', 'address', 'director', 'phone', 'email', 'site', :city_id ])
                         scrubber = CsvScrubber.new(import)
                         scrubber.scrub
                       }
@@ -26,6 +28,13 @@ ActiveAdmin.register School do
     column :city
     actions
   end
+
+  # form do |f|
+  #   f.inputs do
+  #     f.input
+  #
+  #   end
+  # end
 
   csv do
     column :id
