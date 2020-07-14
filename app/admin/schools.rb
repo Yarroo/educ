@@ -8,6 +8,10 @@ ActiveAdmin.register School do
 
   filter :city, collection: proc {City.includes(:schools).where.not(schools: {id: nil}).pluck(:name, :id).uniq}
 
+  permit_params :name, :short_name, :director, :address, :phone,
+                :site, :city_id, email: []
+
+
   index do
     selectable_column
     id_column
@@ -32,5 +36,13 @@ ActiveAdmin.register School do
     column (:email) { |school| school.email.join(", ") }
     column (:phone) { |school| school.phone.join(", ")}
     column :site
+  end
+
+  controller do
+    def update
+      email = params[:school][:email].split(",")
+      params[:school][:email] = Array.wrap(email)
+      super
+    end
   end
 end
