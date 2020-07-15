@@ -50,7 +50,9 @@ ActiveAdmin.register School do
   controller do
     def update
       email = params[:school][:email].split(",")
+      phone = params[:school][:phone].split(",")
       params[:school][:email] = Array.wrap(email)
+      params[:school][:phone] = Array.wrap(phone)
       super
     end
   end
