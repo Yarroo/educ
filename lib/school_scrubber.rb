@@ -32,11 +32,11 @@ class SchoolScrubber
   end
 
   def scrub_phone(text)
-    text&.scan(School::FIND_PATTERN[:phone]).flatten.select{|x| x.length > 5}
+    text&.scan(School::FIND_PATTERN[:phone])&.flatten&.select{|x| x.length > 5}
   end
 
   def scrub_email(text)
-    text&.gsub('@ ', '@')&.scan(School::FIND_PATTERN[:email]).flatten
+    text&.gsub('@ ', '@')&.scan(School::FIND_PATTERN[:email])&.flatten
   end
 
   def scrub_site(text)
