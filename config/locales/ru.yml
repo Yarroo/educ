@@ -13,6 +13,8 @@ ru:
       city:
         name: Название
         population: Население
+        region: Регион
+        district: Округ
       school:
         name: Имя
         short_name: Короткое имя
