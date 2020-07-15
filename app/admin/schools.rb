@@ -10,8 +10,8 @@ ActiveAdmin.register School do
 
   filter :city, collection: proc {City.includes(:schools).where.not(schools: {id: nil}).pluck(:name, :id).uniq}
 
-  permit_params :name, :short_name, :director, :address, :phone,
-                :site, :city_id, email: []
+  permit_params :name, :short_name, :director, :address,
+                :site, :city_id, email: [], phone: []
 
 
   index do
