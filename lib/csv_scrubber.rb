@@ -25,10 +25,10 @@ class CsvScrubber < SchoolScrubber
   end
 
   def scrub_phone(text)
-    "{#{super.join(',')}}"
+    "{#{super&.join(',')}}"
   end
 
   def scrub_email(text)
-    "{#{super.join(',')}}"
+    "{#{super&.join(',')}}"
   end
 end
