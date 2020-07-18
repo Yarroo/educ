@@ -24,7 +24,11 @@ ActiveAdmin.register School do
     column (:email) { |school| school.email.map { |email| mail_to email }}
     column :address
     column :phone
-    column :site
+    column :site do |school|
+      school.site&.split(",")&.map do |link|
+        link_to URI.decode(link), link
+      end
+    end
     column :city
     actions
   end

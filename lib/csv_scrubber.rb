@@ -20,14 +20,6 @@ class CsvScrubber < SchoolScrubber
     @importer.batch_replace(:city_id, cities)
   end
 
-  def scrub_site(text)
-    super.join(',')
-  end
-
-  def scrub_phone(text)
-    "{#{super&.join(',')}}"
-  end
-
   def scrub_email(text)
     "{#{super&.join(',')}}"
   end

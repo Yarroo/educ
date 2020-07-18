@@ -32,7 +32,7 @@ class SchoolScrubber
   end
 
   def scrub_phone(text)
-    text&.scan(School::FIND_PATTERN[:phone])&.flatten&.select{|x| x.length > 5}
+    text&.strip
   end
 
   def scrub_email(text)
@@ -40,6 +40,9 @@ class SchoolScrubber
   end
 
   def scrub_site(text)
-    URI.extract(text)
+    uri_array = text&.scan(School::FIND_PATTERN[:site])
+    uri_array&.map do |uri|
+      URI.extract(URI.encode(uri))
+    end&.flatten&.join(",")
   end
 end
