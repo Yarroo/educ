@@ -3,7 +3,6 @@ ActiveAdmin.register School do
   active_admin_import validate: true,
                       headers_rewrites: { 'city': :city_id },
                       before_batch_import: proc { |import|
-                        import.batch_slice_columns(['name', 'short_name', 'address', 'director', 'phone', 'email', 'site', :city_id ])
                         scrubber = CsvScrubber.new(import)
                         scrubber.scrub
                       }
