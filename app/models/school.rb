@@ -6,7 +6,7 @@ class School < ApplicationRecord
   FIND_PATTERN = {
       email: /([a-z\-\–_\d\.]*@[a-z\d]*\.[a-z]*)+/i,
       phone: /([\d\+\-\(\)]+)+/,
-      site: /[[:word:]]*:\/\/[[:word:]-]*\.[[:word:]-]*[\.[:word:]-]*/i,
+      site: /[[:word:]*:\/\/]*[[:word:]-]*\.[[:word:]-]*[\.[:word:]-]*/i,
   }
 
 end
