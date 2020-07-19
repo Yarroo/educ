@@ -42,12 +42,12 @@ ActiveAdmin.register School do
 
   csv do
     column :id
-    column (:city) { |school| school.city.name }
+    column (:city) { |school| school&.city&.name }
     column :name
     column :short_name
     column :director
     column (:email) { |school| school.email.join(", ") }
-    column (:phone) { |school| school.phone.join(", ")}
+    column :phone
     column :site
   end
 
