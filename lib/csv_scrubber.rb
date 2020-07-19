@@ -18,7 +18,12 @@ class CsvScrubber < SchoolScrubber
     end
 
     values = @importer.values_at(:city_id)
-    cities = City.where(name: values).pluck(:name, :id).to_h
+    cities = values.reduce({}) do |memo, value|
+      unless memo[value].present?
+        id = City.where("name ILIKE ?", value.strip).pluck(:id).first
+        memo.merge!(value => id)
+      end
+    end
     @importer.batch_replace(:city_id, cities)
   end
 
