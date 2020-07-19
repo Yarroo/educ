@@ -4,6 +4,8 @@ class CsvScrubber < SchoolScrubber
   end
 
   def scrub
+    @importer.csv_lines = @importer.csv_lines.select { |line| line.compact.present?}
+
     headers = @importer.headers
 
     headers.each do |header|
