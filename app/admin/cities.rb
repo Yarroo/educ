@@ -16,7 +16,9 @@ ActiveAdmin.register City do
     column :population
     column :district
     column :region
-    column (:school_count) {|city| link_to city&.schools&.count, admin_schools_path(q: { city_id_eq: city.id }) }
+    column :schools_count, sortable: :schools_count do |city|
+      link_to city&.schools_count, admin_schools_path(q: { city_id_eq: city.id })
+    end
   end
 
   show do
