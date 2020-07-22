@@ -40,10 +40,11 @@ class SchoolScrubber
   end
 
   def scrub_site(text)
+    p = URI::Parser.new(:HOSTNAME => "(?:(?:[a-zA-Z\\d](?:[-\\_a-zA-Z\\d]*[a-zA-Z\\d])?)\\.)*(?:[a-zA-Z](?:[-\\_a-zA-Z\\d]*[a-zA-Z\\d])?)\\.?")
     uri_array = text&.scan(School::FIND_PATTERN[:site])
     uri_array&.map do |uri|
       uri = "http://#{uri}" unless uri.start_with?("http://") || uri.start_with?("https://")
-      URI.extract(URI.encode(uri))
+      p.extract(URI.encode(uri))
     end&.flatten&.join(",")
   end
 end
