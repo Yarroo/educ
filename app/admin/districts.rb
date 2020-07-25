@@ -1,9 +1,9 @@
 ActiveAdmin.register District do
   menu false
 
-  actions :index, :show
-
   config.sort_order = 'name_asc'
+
+  permit_params :name
 
   index do
     selectable_column
@@ -11,5 +11,6 @@ ActiveAdmin.register District do
     column :name
     column (:regions_count) { |district| district&.regions&.count }
     column (:cities_count) { |district| district&.regions.reduce(0){ |memo, elm| memo + elm.cities&.count }}
+    actions
   end
 end
