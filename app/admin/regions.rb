@@ -13,6 +13,8 @@ ActiveAdmin.register Region do
     column :city_count do |region|
       link_to region&.cities&.count, admin_cities_path(q: { region_id_eq: region.id })
     end
+    column :updated_at
+    column :created_at
     actions
   end
 

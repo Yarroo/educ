@@ -112,4 +112,40 @@ class Import < Thor
       puts "Errors. Log save"
     end
   end
+
+  desc 'from_xml', ''
+  option :file_path
+  def xml_region_and_district
+    load_env
+
+    file_path = options[:file_path] ||  Rails.root.join('tmp', 'persisted', 'data.xml')
+
+    unless File.file?(file_path)
+      pp "Script stop. File not found"
+      return
+    end
+
+    count = 0
+
+    Nokogiri::XML::Reader(File.open(file_path)).each do |node|
+      if node.name == 'Certificate' && node.node_type == Nokogiri::XML::Reader::TYPE_ELEMENT
+        hash = Hash.from_xml(Nokogiri::XML(node.outer_xml).at('./Certificate').to_s)
+
+        certificate = hash["Certificate"]
+
+        district = District.find_or_initialize_by(name: certificate["FederalDistrictName"])
+        district.short_name = certificate["FederalDistrictShortName"]
+        district.code = certificate["FederalDistrictCode"]
+        district.save if district.changed?
+
+        region = Region.find_or_initialize_by(name: certificate["RegionName"])
+        region.code = certificate["RegionCode"]
+        region.district = district
+        region.save if region.changed?
+
+        count += 1
+        printf("\r%d", count, ) if STDOUT.tty?
+      end
+    end
+  end
 end
