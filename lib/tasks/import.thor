@@ -148,4 +148,64 @@ class Import < Thor
       end
     end
   end
+
+  desc 'from_xml', ''
+  option :file_path
+  def xml_educational_program
+    load_env
+
+    file_path = options[:file_path] ||  Rails.root.join('tmp', 'persisted', 'data.xml')
+
+    unless File.file?(file_path)
+      pp "Script stop. File not found"
+      return
+    end
+
+    count = 0
+
+    Nokogiri::XML::Reader(File.open(file_path)).each do |node|
+      if node.name == 'EducationalProgram' && node.node_type == Nokogiri::XML::Reader::TYPE_ELEMENT
+        hash = Hash.from_xml(Nokogiri::XML(node.outer_xml).at('./EducationalProgram').to_s)
+
+        program = hash["EducationalProgram"]
+
+        if program["TypeName"].present?
+          program_type = Educational::ProgramType.find_or_initialize_by(name:  program["TypeName"])
+          program_type.save if program_type.changed?
+        end
+
+        if program["EduLevelName"].present?
+          level = Educational::Level.find_or_initialize_by(name: program["EduLevelName"])
+          level.save if level.changed?
+        end
+
+        if program['UGSCode'].present?
+          ugs_code = Educational::UgsCode.find_or_initialize_by(code: program['UGSCode'])
+          ugs_code.name = program["UGSName"]
+          ugs_code.save if ugs_code.changed?
+        end
+
+        edu_program = Educational::Program.find_or_initialize_by(
+            name:  program["ProgrammName"],
+            code:   program["ProgrammCode"],
+            okso_code: program["OKSOCode"],
+
+        )
+
+        edu_program.level = level if level.present?
+        edu_program.program_type = program_type if program_type.present?
+        edu_program.ugs_code = ugs_code if ugs_code.present?
+        edu_program.qualification = program["Qualification"]
+        edu_program.accredited = program["IsAccredited"].present?
+        edu_program.canceled = ActiveModel::Type::Boolean.new.cast(program["IsCanceled"])
+        edu_program.suspended = ActiveModel::Type::Boolean.new.cast(program["IsSuspended"])
+        edu_program.save if edu_program.changed?
+
+        count += 1
+        printf("\r%d", count, ) if STDOUT.tty?
+      end
+    end
+
+    puts if STDOUT.tty?
+  end
 end

@@ -236,6 +236,13 @@ ActiveAdmin.setup do |config|
       menu.add label: "Регионы", priority: 4, url: proc { admin_regions_path }
       menu.add label: "Города", priority: 5, url: proc { admin_cities_path }
       menu.add label: "Школы", priority: 6, url: proc { admin_schools_path }
+
+      menu.add label: 'ФСНСОН' do |submenu|
+        submenu.add label: 'Образовательные программы', priority: 1, url: proc { admin_educational_programs_path }
+        submenu.add label: 'Код УГСН ', priority: 2, url: proc { admin_educational_ugs_codes_path }
+        submenu.add label: 'Тип программы', priority: 3, url: proc { admin_educational_program_types_path }
+        submenu.add label: 'Уровень', priority: 4, url: proc { admin_educational_levels_path }
+      end
     end
 
     admin.build_menu :utility_navigation do |menu|
