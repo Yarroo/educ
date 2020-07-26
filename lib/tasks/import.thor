@@ -207,4 +207,86 @@ class Import < Thor
 
     puts if STDOUT.tty?
   end
+
+  desc 'educational_organisation', ''
+  option :file_path
+  def xml_educational_unit
+    load_env
+
+    file_path = options[:file_path] ||  Rails.root.join('tmp', 'persisted', 'data.xml')
+
+    unless File.file?(file_path)
+      pp "Script stop. File not found"
+      return
+    end
+
+    count = 0
+
+    Nokogiri::XML::Reader(File.open(file_path)).each do |node|
+      if node.name == 'Certificate' && node.node_type == Nokogiri::XML::Reader::TYPE_ELEMENT
+        hash = Hash.from_xml(Nokogiri::XML(node.outer_xml).at('./Certificate').to_s)
+        certificate = hash["Certificate"]
+
+        district = District.find_or_initialize_by(name: certificate["FederalDistrictName"])
+        district.short_name = certificate["FederalDistrictShortName"]
+        district.code = certificate["FederalDistrictCode"]
+        district.save if district.changed?
+
+        region = Region.find_or_initialize_by(name: certificate["RegionName"])
+        region.code = certificate["RegionCode"]
+        region.district = district
+        region.save if region.changed?
+
+        program_ids = []
+        supplements = Array.wrap(certificate["Supplements"]&.[]("Supplement"))
+        supplements.each do |supplement|
+          programs = supplement["EducationalPrograms"]&.[]("EducationalProgram")
+          program_ids = Array.wrap(programs).map do |program|
+            level = Educational::Level.find_by(name: program["EduLevelName"])
+
+            Educational::Program.find_by(
+                name:  program["ProgrammName"],
+                code:   program["ProgrammCode"],
+                okso_code: program["OKSOCode"],
+                level: level,
+                )&.id
+          end
+        end
+
+        school_hash = certificate['ActualEducationOrganization']
+
+        next unless school_hash.present?
+
+        unit = Educational::Unit.find_or_initialize_by(uuid: school_hash['Id'])
+
+        unit.name = school_hash['FullName']
+        unit.short_name = school_hash['ShortName']
+        unit.head_uuid = school_hash['HeadEduOrgId']
+        unit.branch = school_hash['IsBranch']
+        unit.address = school_hash['PostAddress']
+        unit.phone = school_hash['Phone']
+        unit.email = school_hash['Email']
+        unit.site = school_hash['WebSite']
+        unit.ogrn = school_hash['OGRN']
+        unit.inn = school_hash['INN']
+        unit.head_post = school_hash['HeadPost']
+        unit.head_name = school_hash['HeadName']
+        unit.form_name = school_hash['FormName']
+        unit.form_code = school_hash['FormCode']
+        unit.kind_name = school_hash['KindName']
+        unit.kind_code = school_hash['KindCode']
+        unit.type_name = school_hash['TypeName']
+        unit.type_code = school_hash['TypeCode']
+        unit.region = region
+        unit.save if unit.changed?
+        unit.program_ids = program_ids
+
+        count += 1
+        printf("\r%d", count, ) if STDOUT.tty?
+      end
+    end
+
+    puts if STDOUT.tty?
+  end
+
 end
