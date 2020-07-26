@@ -189,13 +189,12 @@ class Import < Thor
             name:  program["ProgrammName"],
             code:   program["ProgrammCode"],
             okso_code: program["OKSOCode"],
-
+            level: level,
         )
 
-        edu_program.level = level if level.present?
         edu_program.program_type = program_type if program_type.present?
         edu_program.ugs_code = ugs_code if ugs_code.present?
-        edu_program.qualification = program["Qualification"]
+        edu_program.qualification = program["Qualification"] if program["Qualification"].present?
         edu_program.accredited = program["IsAccredited"].present?
         edu_program.canceled = ActiveModel::Type::Boolean.new.cast(program["IsCanceled"])
         edu_program.suspended = ActiveModel::Type::Boolean.new.cast(program["IsSuspended"])
