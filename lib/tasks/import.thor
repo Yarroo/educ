@@ -271,12 +271,6 @@ class Import < Thor
         unit.inn = school_hash['INN']
         unit.head_post = school_hash['HeadPost']
         unit.head_name = school_hash['HeadName']
-        unit.form_name = school_hash['FormName']
-        unit.form_code = school_hash['FormCode']
-        unit.kind_name = school_hash['KindName']
-        unit.kind_code = school_hash['KindCode']
-        unit.type_name = school_hash['TypeName']
-        unit.type_code = school_hash['TypeCode']
         unit.region = region
         unit.save if unit.changed?
         unit.program_ids = program_ids
@@ -287,6 +281,13 @@ class Import < Thor
     end
 
     puts if STDOUT.tty?
+  end
+
+  desc 'import_xml', ''
+  def import_xml
+    xml_educational_program
+    GC.start
+    xml_educational_unit
   end
 
 end
