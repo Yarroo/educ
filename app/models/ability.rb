@@ -10,7 +10,10 @@ class Ability
 
     if user.roles.include? "redactor"
       can :read, ActiveAdmin::Page, name: "Dashboard"
-      can :manage, [Region, School, District, City]
+      can :manage, [Region, School, District, City, Educational::Level,
+                    Educational::Program, Educational::ProgramType, Educational::UgsCode,
+                    Educational::Unit
+      ]
     end
 
     if user.roles.include? "user"
