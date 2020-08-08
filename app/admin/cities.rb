@@ -6,6 +6,7 @@ ActiveAdmin.register City do
   config.sort_order = 'name_asc'
 
   filter :name
+  filter :name_select, as: :select, collection: proc {City.pluck(:name, :id).uniq}, input_html: { multiple: true }
   filter :district
   filter :region
 

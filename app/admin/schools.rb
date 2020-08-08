@@ -7,7 +7,7 @@ ActiveAdmin.register School do
                         scrubber.scrub
                       }
 
-  filter :city, collection: proc {City.includes(:schools).where.not(schools: {id: nil}).pluck(:name, :id).uniq}
+  filter :city, collection: proc {City.includes(:schools).where.not(schools: {id: nil}).pluck(:name, :id).uniq}, input_html: { multiple: true }
 
   permit_params :name, :short_name, :director, :address,
                 :site, :city_id, email: [], phone: []
